@@ -9,18 +9,20 @@ app.use('/account', accounts);
 
 const { readFile, writeFile} = fs;
 
+global.fileAccounts = "accounts.json";
+
 
 app.listen(3000, async () => {
 
     try {
-        await readFile("accounts.json");    
+        await readFile(global.fileAccounts);    
     } catch (error) {
         const initialJson = {
             nextId: 1,
             accounts: []
         };
 
-        writeFile("accounts.json", JSON.stringify(initialJson)).then(() => {
+        writeFile(global.fileAccounts, JSON.stringify(initialJson)).then(() => {
             console.log('Arquivo criado com sucesso');
         }).catch(err => {
             console.log(err);

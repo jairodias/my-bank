@@ -7,7 +7,7 @@ const { readFile, writeFile } = fs;
 app.post('/create', async (req, res) => {
     try {
         let account = req.body;
-        const accounts = JSON.parse(await readFile("accounts.json"));
+        const accounts = JSON.parse(await readFile(global.fileAccounts));
 
         account = {
             id: accounts.nextId,
@@ -18,7 +18,7 @@ app.post('/create', async (req, res) => {
 
         accounts.accounts.push(account);
 
-        await writeFile("accounts.json", JSON.stringify(accounts));
+        await writeFile(global.fileAccounts, JSON.stringify(accounts, null, 2));
 
         res.status(200).send({
             success: true,
@@ -33,5 +33,47 @@ app.post('/create', async (req, res) => {
         });
     }
 });
+
+app.get('/accounts', async (req, res) => {
+    try {
+        const accounts = JSON.parse(await readFile(global.fileAccounts));
+        delete accounts.nextId;
+        res.status(200).send({
+            success: true,
+            message: "Todas as contas do nosso banco esta listada a baixo",
+            response: accounts
+        });
+
+    } catch (error) {
+        res.status(400).send({
+            success: false,
+            message: error.message
+        })
+    }
+})
+
+app.get('/accounts/:cpf', async (req, res) => {
+    try {
+        const { cpf } = req.params;
+        console.log(cpf);
+        const accounts = JSON.parse( await readFile(global.fileAccounts));
+
+        const response = accounts.accounts.filter((account) => {
+            return account.cpf == cpf;
+        });
+
+        res.status(200).send({
+            success: true,
+            message: "Cliente encontrado com sucesso",
+            response
+        });
+
+    } catch (error) {
+        res.status(400).send({
+            success: false,
+            message: error.message
+        })
+    }
+})
 
 export default app;
