@@ -55,7 +55,7 @@ app.get('/accounts', async (req, res) => {
 app.get('/accounts/:cpf', async (req, res) => {
     try {
         const { cpf } = req.params;
-        console.log(cpf);
+    
         const accounts = JSON.parse( await readFile(global.fileAccounts));
 
         const response = accounts.accounts.filter((account) => {
