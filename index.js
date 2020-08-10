@@ -13,7 +13,7 @@ global.fileAccounts = "accounts.json";
 
 
 app.listen(3000, async () => {
-
+    
     try {
         await readFile(global.fileAccounts);    
     } catch (error) {

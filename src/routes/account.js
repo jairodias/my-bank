@@ -50,16 +50,16 @@ app.get('/accounts', async (req, res) => {
             message: error.message
         })
     }
-})
+});
 
-app.get('/accounts/:cpf', async (req, res) => {
+app.get('/accounts/:id', async (req, res) => {
     try {
-        const { cpf } = req.params;
+        const { id } = req.params;
     
         const accounts = JSON.parse( await readFile(global.fileAccounts));
 
         const response = accounts.accounts.filter((account) => {
-            return account.cpf == cpf;
+            return account.id == id;
         });
 
         res.status(200).send({
@@ -74,6 +74,60 @@ app.get('/accounts/:cpf', async (req, res) => {
             message: error.message
         })
     }
-})
+});
+
+app.delete('/account/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        let accounts = JSON.parse(await readFile(global.fileAccounts));
+
+        accounts.accounts = accounts.accounts.filter(account => {
+            return account.id != id;
+        });
+
+        await writeFile(global.fileAccounts, JSON.stringify(accounts, null, 2));
+
+        res.status(200).send({
+            success: false,
+            message: "Conta excluida com sucesso",
+        });
+
+    } catch (error) {
+        res.status(400).send({
+            success: false,
+            message: error.message
+        });
+
+    }
+});
+
+
+app.put('/accounts/modified', async (req, res) => {
+    try {
+        const account = req.body;
+
+        let accounts = JSON.parse(await readFile(global.fileAccounts));
+
+        const index = accounts.accounts.findIndex(value => {
+            return value.id == account.id;
+        });
+
+        accounts[index] = account;
+
+        await writeFile(global.fileAccounts, JSON.stringify(accounts, null, 2));
+
+        res.status(200).send({
+            success: false,
+            message: "Dados atualizados com sucesso!",
+            response: account,
+        });
+
+    } catch (error) {
+        res.status(400).send({
+            success: false,
+            message: error.message
+        })
+    }
+});
 
 export default app;
