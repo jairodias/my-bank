@@ -1,12 +1,4 @@
 {
-  "1": {
-    "id": 2,
-    "name": "Milena Ferreira Gomes",
-    "balance": "1200.00",
-    "cpf": "178.928.247-07",
-    "Sexo": "F",
-    "data_nascimento": "09/04/1999"
-  },
   "nextId": 3,
   "accounts": [
     {
@@ -17,5 +9,13 @@
       "Sexo": "M",
       "data_nascimento": "22/06/1999"
     }
-  ]
+  ],
+  "-1": {
+    "id": -1,
+    "name": "Milena Ferreira Gomes",
+    "balance": "1200.00",
+    "cpf": "178.928.247-07",
+    "Sexo": "F",
+    "data_nascimento": "09/04/1999"
+  }
 }
